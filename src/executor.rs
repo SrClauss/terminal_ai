@@ -165,10 +165,10 @@ impl CommandExecutor {
                     let full_stderr = collected_stderr.join("\n");
 
                     if exit_code == 0 {
-                        if full_stdout.trim().is_empty() {
+                        if full_stdout.trim().is_empty() && full_stderr.trim().is_empty() {
                             println!("{}", format!("ℹ️  O comando rodou com sucesso em {total_secs:.2}s, mas nenhuma saída foi emitida.").yellow());
                         } else {
-                            let lines_count = collected_stdout.len();
+                            let lines_count = collected_stdout.len() + collected_stderr.len();
                             println!("{}", format!("✓ Concluído com sucesso ({lines_count} linha(s) de saída em {total_secs:.2}s).").green().bold());
                         }
                     } else {
