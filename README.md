@@ -2,38 +2,40 @@
 
 # ⚡ Terminal AI (`tai`)
 
-**Traduza comandos em linguagem natural diretamente para Bash/Linux com alta performance, didática prévia e segurança contra desastres.**
+**Translate natural language requests directly into Bash/Linux commands with high performance, interactive explanations, and built-in disaster safety.**
 
 [![Rust](https://img.shields.io/badge/Language-Rust-orange.svg?logo=rust)](https://www.rust-lang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/SrClauss/terminal_ai/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/SrClauss/terminal_ai?style=social)](https://github.com/SrClauss/terminal_ai)
 
-[Instalação](#-instalação-rápida) • [Como Usar](#-como-usar) • [Segurança](#-segurança-e-trava-contra-desastres) • [Como Contribuir](#-como-contribuir-roadmap-aberto)
+[English](README.md) • [Português](README.pt-BR.md)
+
+[Quick Install](#-quick-install) • [Usage](#-how-to-use) • [Safety](#-safety-and-disaster-prevention) • [Contributing](#-how-to-contribute-open-roadmap)
 
 </div>
 
 ---
 
-## 🎯 Por que o `tai`?
+## 🎯 Why `tai`?
 
-Quantas vezes você precisou pesquisar as flags complexas do `tar`, encontrar processos que estão consumindo muita memória com `ps` ou filtrar arquivos no `find`? 
+How often do you find yourself looking up complex `tar` flags, filtering memory-heavy processes with `ps`, or crafting convoluted `find` commands?
 
-O **Terminal AI (`tai`)** foi desenvolvido nativamente em **Rust** para ser um copiloto direto no seu terminal:
-1. **Ultrarrápido**: Inicialização em **< 2ms** (sem delays de interpretador).
-2. **Explica Antes de Rodar**: Você nunca executa um comando às cegas. O `tai` detalha cada flag e pipe gerado.
-3. **Trava de Segurança Nativa**: Bloqueia e emite alertas em vermelho contra comandos destrutivos (`rm -rf /`, `mkfs`, `> /dev/sd*`).
-4. **Área de Transferência Nativamente Integrada**: Suporte a Wayland (`wl-copy`) e X11 (`xclip`).
-5. **Multiprovedores**: Conecte com **DeepSeek**, **OpenAI** ou **Ollama local** (`yi-coder:1.5b`, `qwen2.5-coder`) para trabalhar 100% offline.
-6. **Memória de Sessão Contínua**: Lembra o contexto dos seus comandos recentes (TTL de 15 min). Diga *"agora compacte eles"* ou *"adicione a flag -v"* e ele sabe exatamente o que fazer.
-7. **Multicomandos Encadeados**: Gera sequências completas (`&&`, `|`, `;`) destacando cada passo visualmente na tela. Flag `-n` ou `tai clear` para reiniciar a memória.
-8. **Streaming em Tempo Real (SSE)**: Respostas e comandos exibidos progressivamente em tempo real conforme chegam da IA, reduzindo a latência percebida para quase zero.
+**Terminal AI (`tai`)** is built natively in **Rust** as a blazingly fast copilot right inside your terminal:
+1. **Ultra-fast**: Cold start in **< 2ms** (zero runtime interpreter overhead).
+2. **Explains Before Running**: Never run commands blindly. `tai` breaks down every generated flag, pipe, and parameter.
+3. **Native Safety Guard**: Blocks and emits red alert warnings against catastrophic commands (`rm -rf /`, `mkfs`, `> /dev/sd*`).
+4. **Native Clipboard Integration**: Seamless clipboard support across Wayland (`wl-copy`) and X11 (`xclip`).
+5. **Multi-provider**: Connect to **DeepSeek**, **OpenAI**, or **local Ollama** (`yi-coder:1.5b`, `qwen2.5-coder`) to work 100% offline.
+6. **Continuous Session Memory**: Keeps context from your recent turns (15-minute TTL). Say *"now compress them"* or *"add the -v flag"* and it knows what you're referring to.
+7. **Chained Multi-step Pipelines**: Generates complex sequences (`&&`, `|`, `;`) visually numbered and previewed. Use `-n` or `tai clear` to reset context memory.
+8. **Real-time Streaming (SSE)**: Responses and commands stream incrementally as tokens arrive from the LLM, reducing perceived latency to near zero.
 
 ---
 
-## 📦 Instalação Rápida
+## 📦 Quick Install
 
-Basta clonar e rodar o instalador automatizado de 1 comando:
+Clone and run the 1-command automated installer:
 
 ```bash
 git clone https://github.com/SrClauss/terminal_ai.git
@@ -41,171 +43,171 @@ cd terminal_ai
 ./install.sh
 ```
 
-O script compilará a versão release otimizada, criará os comandos globais `tai` e `termai` em `~/.local/bin/` e configurará o seu `$PATH`.
+The script compiles the optimized release binary, sets up global symlinks/binaries for `tai` and `termai` in `~/.local/bin/`, and configures your `$PATH`.
 
 ---
 
-## 🚀 Como Usar
+## 🚀 How to Use
 
-### 1. Modo Interativo Assistido (Padrão)
+### 1. Interactive Assisted Mode (Default)
 ```bash
-tai "listar todas as portas tcp abertas e os processos usando"
+tai "list all open tcp ports and their listening processes"
 ```
-O `tai` exibe o comando gerado, explica didaticamente o que cada parâmetro faz e abre o menu de confirmação:
+`tai` displays the generated command, explains what each parameter does, and presents an interactive action menu:
 ```text
 ────────────────────────────────────────────────────────────
-Comando Sugerido: lsof -iTCP -sTCP:LISTEN -n -P
+Suggested Command: lsof -iTCP -sTCP:LISTEN -n -P
 ────────────────────────────────────────────────────────────
 
-Explicação detalhada:
-  - lsof: lista conexões de rede e arquivos abertos.
-  - -iTCP: restringe o filtro para conexões TCP.
-  - -sTCP:LISTEN: apenas portas que estão ativamente em escuta.
-  - -n -P: impede resolução lenta de DNS e nomes de portas.
+Detailed explanation:
+  - lsof: lists open files and network connections.
+  - -iTCP: restricts filtering to TCP connections.
+  - -sTCP:LISTEN: selects ports that are actively listening.
+  - -n -P: disables slow DNS and port name lookups.
 
-? O que deseja fazer?
-> Executar agora
-  Copiar para área de transferência
-  Cancelar
+? What do you want to do?
+> Execute now
+  Copy to clipboard
+  Cancel
 ```
 
-### 2. Modo Rápido / Direto (`-y` / `--yes`)
-Executa imediatamente no shell (com trava de segurança ativa):
+### 2. Fast / Direct Mode (`-y` / `--yes`)
+Executes immediately in the shell (with catastrophic safety checks active):
 ```bash
-tai -y "limpar o cache de pacotes do apt"
+tai -y "clean apt package cache"
 ```
 
-### 3. Modo Dry-Run / Pipe (`-p` / `--print`)
-Gera apenas o comando no `stdout` sem menus nem animações, ideal para scripts ou `eval`:
+### 3. Dry-Run / Pipe Mode (`-p` / `--print`)
+Outputs only the raw command to `stdout` with no menus or decorative ANSI output—ideal for scripts and `eval`:
 ```bash
-eval "$(tai -p 'mostrar uso de disco apenas de sistemas de arquivos reais')"
+eval "$(tai -p 'show disk usage only for real filesystems')"
 ```
 
-### 4. Modo Copiar para o Clipboard (`-c` / `--copy`)
+### 4. Copy to Clipboard Mode (`-c` / `--copy`)
 ```bash
-tai -c "compactar a pasta src excluindo .git e target"
+tai -c "tar compress src folder excluding .git and target"
 ```
 
-### 5. Desativar Streaming Sob Demanda (`--no-stream`)
-Por padrão, o `tai` exibe o comando gerado em tempo real via streaming SSE. Para forçar a resposta em bloco único:
+### 5. Disable Streaming on Demand (`--no-stream`)
+By default, `tai` streams tokens in real time via SSE. To wait for the full response before rendering:
 ```bash
-tai --no-stream "descompactar arquivo tar.gz"
+tai --no-stream "extract tar.gz archive"
 ```
 
-### 6. Modo de Tarefa em Loop Autônomo (`tai task`)
-Para objetivos complexos que exigem múltiplos passos consecutivos (ex: compilar, diagnosticar e testar), o `tai` possui um motor de loop agêntico:
+### 6. Autonomous Loop Task Mode (`tai task`)
+For complex multi-step objectives requiring consecutive execution, feedback inspection, and correction (e.g., build, diagnose, and test):
 ```bash
-tai task "instalar dependências do projeto e rodar a suíte de testes"
+tai task "install project dependencies and run the test suite"
 ```
-* **Checkpoint com Diagnóstico de Dificuldade**: Ao atingir o limite de passos (padrão de 5 passos ou `--max-steps <N>`), a IA compila os erros ocorridos, avalia a complexidade/dificuldade e pergunta interativamente se você deseja conceder **mais 5 passos**.
-* **Modo Totalmente Autônomo (`-y`)**: Execute sequencialmente os passos sem confirmação intermediária:
+* **Difficulty Checkpoint**: Upon reaching the step limit (default 5 steps or `--max-steps <N>`), the agent summarizes errors encountered, assesses remaining difficulty, and interactively prompts whether to grant **5 more steps**.
+* **Fully Autonomous Mode (`-y`)**: Runs steps sequentially without intermediate user confirmation:
 ```bash
-tai task "preparar ambiente de build e compilar binário" -y
+tai task "prepare build environment and compile binary" -y
 ```
 
 ---
 
-## ⚙️ Configuração
+## ⚙️ Configuration
 
-O `tai` pode ser configurado tanto por **comandos de terminal** quanto editando diretamente os **arquivos de configuração**:
+`tai` can be configured either via **CLI commands** or by editing the **configuration files**:
 
-### 1. Via Comandos de Terminal (`tai config`)
+### 1. Via CLI Commands (`tai config`)
 
 ```bash
-# Alternar automaticamente para Ollama local (offline):
+# Switch to local Ollama (offline):
 tai config set provider ollama
-# (O tai atualizará automaticamente api_url para http://localhost:11434/v1 e o modelo padrão)
+# (tai automatically updates api_url to http://localhost:11434/v1 and sets the default model)
 
-# Para usar um modelo específico do seu Ollama:
+# Use a specific model installed in Ollama:
 tai config set model "yi-coder:1.5b"
 
-# Alternar de volta para a DeepSeek na nuvem:
+# Switch back to cloud DeepSeek:
 tai config set provider deepseek
-tai config set api_key "sua-chave-aqui"
+tai config set api_key "your-api-key-here"
 
-# Ativar ou desativar streaming de respostas (padrão: true):
+# Toggle response streaming (default: true):
 tai config set stream false
 
-# Ver a configuração ativa:
+# View active configuration:
 tai config show
 ```
 
-### 2. Diretamente no Arquivo (`~/.config/tai/config.toml`)
+### 2. Configuration File (`~/.config/tai/config.toml`)
 
-O arquivo de configuração permanente fica localizado em:
-`~/.config/tai/config.toml` (permissão de segurança `0600`)
+Permanent configuration is stored at:
+`~/.config/tai/config.toml` (secured with `0600` permissions)
 
 ```toml
 provider = "ollama"
 model = "yi-coder:1.5b"
 api_url = "http://localhost:11434/v1"
 api_key = "sk-..."
-language = "pt"
+language = "en"
 default_mode = "interactive"
 stream = true
 ```
 
-### 3. Regras Pessoais e Preferências Fixas (`~/.config/tai/rules.md`)
+### 3. Custom System Rules & Preferences (`~/.config/tai/rules.md`)
 
-Você pode ensinar preferências permanentes ao `tai` criando ou editando o arquivo `~/.config/tai/rules.md`:
+You can teach persistent personal preferences by creating or editing `~/.config/tai/rules.md`:
 
 ```markdown
-# Minhas Preferências para o tai
-- Sempre que sugerir comandos de disco (du, df), adicione a flag -h para legibilidade humana.
-- Prefira neovim (nvim) em vez de nano se for abrir editores.
-- Sempre liste arquivos ordenando por tamanho ou data mais recente.
+# Personal Preferences for tai
+- Whenever suggesting disk commands (du, df), always append the -h flag for human-readable output.
+- Prefer neovim (nvim) over nano when editors are needed.
+- Always sort file listings by size or most recent modification date.
 ```
-O `tai` lerá esse arquivo automaticamente e obedecerá às suas instruções em qualquer consulta futura.
+`tai` automatically reads this file and injects your custom rules into every future prompt.
 
 ---
 
-## 🛡️ Segurança e Trava Contra Desastres
+## 🛡️ Safety and Disaster Prevention
 
-O `tai` possui um analisador estático interno de comandos. Caso uma LLM gere acidentalmente um comando com potencial catastrófico:
-- `rm -rf /` ou `rm -rf /*`
-- `mkfs.*` em partições de sistema
-- Redirecionamentos diretos em `/dev/sd*` ou `/dev/nvme*`
+`tai` includes an internal static command analyzer. If an LLM accidentally suggests a potentially catastrophic command:
+- `rm -rf /` or `rm -rf /*`
+- `mkfs.*` on system partitions
+- Direct writes to `/dev/sd*` or `/dev/nvme*`
 - Fork bombs
 
-O comando é **imediatamente marcado com alerta vermelho crítico** e a execução direta (`-y`) é cancelada para evitar perda de dados.
+The command is **immediately flagged with a critical red warning** and direct execution (`-y`) is aborted to safeguard your data.
 
 ---
 
-## 🤝 Como Contribuir (Precisamos da sua ajuda!)
+## 🤝 How to Contribute (We need your help!)
 
-Este é um projeto **Open Source** e qualquer contribuição é muito bem-vinda! Se você achou a ferramenta útil, ajude com uma ⭐ no GitHub e colabore conosco.
+This is an **Open Source** project and contributions of all kinds are welcome! If you find `tai` useful, consider leaving a ⭐ on GitHub and collaborating with us.
 
-### Áreas onde você pode ajudar agora:
+### Areas where you can help right now:
 
-- [ ] **Novos Provedores de IA**: Integração com Anthropic Claude, Google Gemini e Groq.
-- [ ] **Empacotamento de Distribuições**:
-  - Criar pacote para o Arch Linux AUR (`PKGBUILD`).
-  - Homebrew tap para Linux/macOS.
-  - Pacote Debian/Ubuntu (`.deb`).
-- [ ] **Testes e Benchmarks com Modelos Locais (Ollama)**:
-  - > ⚠️ **Nota Prática sobre Modelos Pequenos**: Testes realizados com SLMs ultraleves (~0.8B a 1.5B, como `yi-coder:1.5b` e `dgpl-linux-assistant`) apresentaram resultados insatisfatórios em produção (latência alta em CPU, alucinações de delimitadores e dificuldade em seguir formatos estritos).
-  - Convidamos os contribuidores a testar e homologar modelos mais robustos (7B a 14B, como `qwen2.5-coder:7b`, `deepseek-coder:6.7b` ou `codellama`) para uso local offline de alta qualidade.
-- [ ] **Internacionalização (i18n)**:
-  - Adicionar suporte a Espanhol (`es`), Francês (`fr`), Alemão (`de`), etc.
-- [ ] **Suporte a mais Shells**:
-  - Autocompletions para `fish`, `zsh` e `bash`.
+- [ ] **Additional AI Providers**: Native integrations for Anthropic Claude, Google Gemini, and Groq.
+- [ ] **Distribution Packaging**:
+  - Arch Linux AUR package (`PKGBUILD`).
+  - Homebrew tap for Linux/macOS.
+  - Debian/Ubuntu package (`.deb`).
+- [ ] **Local Model Benchmarking (Ollama)**:
+  - > ⚠️ **Practical Note on Small Models**: Tests with ultra-lightweight SLMs (~0.8B to 1.5B, such as `yi-coder:1.5b` and `dgpl-linux-assistant`) showed poor output quality in real-world scenarios (high CPU latency, delimiter hallucinations, difficulty following strict formatting).
+  - We encourage contributors to test and benchmark more capable models (7B to 14B, such as `qwen2.5-coder:7b`, `deepseek-coder:6.7b`, or `codellama`) for offline terminal use.
+- [ ] **Internationalization (i18n)**:
+  - Add language prompts and explanations for Spanish (`es`), French (`fr`), German (`de`), etc.
+- [ ] **Shell Completions**:
+  - Auto-completions for `fish`, `zsh`, and `bash`.
 
-### Como enviar sua contribuição:
-1. Faça um Fork do projeto (`https://github.com/SrClauss/terminal_ai`).
-2. Crie sua branch de feature: `git checkout -b feature/minha-melhoria`.
-3. Desenvolva e teste com `cargo test`.
-4. Envie seu Pull Request! Responderemos e revisaremos com muito prazer.
+### Submitting a Contribution:
+1. Fork the repository (`https://github.com/SrClauss/terminal_ai`).
+2. Create your feature branch: `git checkout -b feature/my-enhancement`.
+3. Develop and test with `cargo test`.
+4. Open a Pull Request! We're glad to review and assist.
 
 ---
 
-## 🔄 Atualização Automática
+## 🔄 Self-Update
 
-Para manter sua instalação sempre na versão mais recente:
+Keep your installation up to date with the latest release:
 ```bash
 tai update
 ```
 
 ---
 
-## 📝 Licença
-Distribuído sob a licença MIT. Consulte `LICENSE` para mais informações.
+## 📝 License
+Distributed under the MIT License. See `LICENSE` for details.
